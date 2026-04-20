@@ -115,7 +115,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Spring Boot.BancupApplication">
+  <component name="RunManager" selected="Spring Boot.CoreApplication">
     <configuration name="BancupApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="bancup" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.bancup.BancupApplication" />
@@ -130,6 +130,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Spring Boot.CoreApplication" />
+      <item itemvalue="Spring Boot.BancupApplication" />
+    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
