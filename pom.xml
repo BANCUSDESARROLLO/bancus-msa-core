@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.bancus</groupId>
+    <groupId>com.core</groupId>
     <artifactId>core-microservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>core-microservice</name>
