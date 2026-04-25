@@ -1,10 +1,10 @@
 package com.core.referral.controller;
 
 import com.core.common.dto.ApiResponse;
-import com.core.referral.dto.request.LinkReferralRequest;
+import com.core.referral.dto.request.LinkReferralFullRequest;
 import com.core.referral.dto.request.OnboardReferralRequest;
 import com.core.referral.dto.request.RegisterReferralCodeRequest;
-import com.core.referral.dto.response.LinkReferralResponse;
+import com.core.referral.dto.response.LinkReferralFullResponse;
 import com.core.referral.dto.response.OnboardReferralResponse;
 import com.core.referral.dto.response.RegisterReferralCodeResponse;
 import com.core.referral.service.ReferralNetworkService;
@@ -69,17 +69,17 @@ public class ReferralNetworkController {
         }
     }
 
-    @PostMapping("/link")
-    public ResponseEntity<ApiResponse<LinkReferralResponse>> linkReferral(
-            @RequestBody LinkReferralRequest request) {
-        if (request == null || request.idReferido() == null || request.idReferido() <= 0) {
+    @PostMapping("/link-full")
+    public ResponseEntity<ApiResponse<LinkReferralFullResponse>> linkReferralFull(
+            @RequestBody LinkReferralFullRequest request) {
+        if (request == null || request.idReferidor() == null || request.idReferidor() <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error("idReferido es obligatorio", "VALIDACION_FALLIDA"));
+                    .body(ApiResponse.error("idReferidor es obligatorio", "VALIDACION_FALLIDA"));
         }
 
         try {
-            LinkReferralResponse response = referralNetworkService
-                    .linkReferral(request.idReferido(), request.codigoReferidor());
+            LinkReferralFullResponse response = referralNetworkService
+                    .linkReferralFull(request.codigoReferido(), request.idReferidor());
             return ResponseEntity.ok(ApiResponse.success("Relacion de referido procesada", response));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

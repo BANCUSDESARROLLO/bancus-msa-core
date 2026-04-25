@@ -5,71 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32069c0a-5892-4ec4-b89f-1401a57e226a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/FRONT_AUTH_SIGNUP_FLOW.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SESSION.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-signup-flow.openapi.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/controller/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/request/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/request/LogoutRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/request/RefreshTokenRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/request/RequestSignupCodeRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/request/SignupRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/request/VerifySignupCodeRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/response/LoginResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/response/RequestSignupCodeResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/response/SignupResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/dto/response/VerifySignupCodeResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/mapper/UsuarioMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/service/AuthService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/service/VerificationCodeDeliveryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/service/impl/AuthServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/service/impl/LoggingVerificationCodeDeliveryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/auth/service/impl/SmtpVerificationCodeDeliveryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/common/dto/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bancup/common/dto/ApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bancup/config/CorsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/config/SecurityBeansConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/AuditoriaEvento.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/CatEstado.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/CatGenero.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/CodigoVerificacionCorreo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/Cuenta.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/Dispositivo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/EstatusCodigoVerificacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/LoginAudit.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/RefreshToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/Rol.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/TipoCodigoVerificacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/entity/Usuario.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/AccountLockedException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/BancupException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/DuplicateResourceException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/ErrorCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/InvalidCredentialsException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/TokenExpiredException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/UserNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/exception/handler/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/AuditoriaEventoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/CatEstadoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/CatGeneroRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/CodigoVerificacionCorreoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/CuentaRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/DispositivoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/LoginAuditRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/RefreshTokenRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/RolRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/repository/UsuarioRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/security/JwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bancup/security/JwtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/controller/ReferralNetworkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/controller/ReferralNetworkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/service/ReferralNetworkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/service/ReferralNetworkService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/bancup/BancupApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/bancup/BancupApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/bancup/auth/dto/request/VerifySignupCodeRequestTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/bancup/auth/dto/response/VerifySignupCodeResponseSerializationTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/bancup/auth/service/impl/AuthServiceImplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/bancup/auth/service/impl/SmtpVerificationCodeDeliveryServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/~$pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +17,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="78" />
+    <option name="cachedIndexableFilesCount" value="55" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,46 +35,53 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/kevinguerra/Documents/BANCUS/bancus-core&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.CoreApplication.executor": "Run",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/kevinguerra/Documents/BANCUS/bancus-core",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Spring Boot.CoreApplication">
-    <configuration name="BancupApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="bancup" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.bancup.BancupApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+}]]></component>
+  <component name="RecapSpentCounter">
+    <option name="endsOfQuotaMs" value="1777341608417" />
+    <option name="spentUsd" value="0.037903503" />
+  </component>
+  <component name="RecapUselessUpdatesCounter">
+    <option name="suspendCountdown" value="0" />
+  </component>
+  <component name="RunManager">
     <configuration name="CoreApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="DB_PASSWORD" value="Bancus_Corefinan#90" />
+        <env name="DB_USER" value="APP_COREFINAN" />
+        <env name="JWT_SECRET" value="MiClaveSuperSeguraParaJWT2026Bancus123456" />
+        <env name="USER" value="APP_USER" />
+      </envs>
       <module name="bancup" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.bancus.CoreApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.core.CoreApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Spring Boot.CoreApplication" />
-      <item itemvalue="Spring Boot.BancupApplication" />
-    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

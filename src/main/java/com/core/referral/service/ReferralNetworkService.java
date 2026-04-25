@@ -1,22 +1,31 @@
 package com.core.referral.service;
 
 import com.core.referral.dto.response.LinkReferralResponse;
+import com.core.referral.dto.response.LinkReferralFullResponse;
 import com.core.referral.dto.response.OnboardReferralResponse;
 import com.core.referral.dto.response.RegisterReferralCodeResponse;
 import com.core.referral.entity.RedReferidos;
 import com.core.referral.entity.UsuarioReferidoMap;
 import com.core.referral.repository.RedReferidosRepository;
 import com.core.referral.repository.UsuarioReferidoMapRepository;
+import com.core.referral.sp.ReferralStoredProcedureClient;
+import com.core.referral.sp.ReferralStoredProcedureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class ReferralNetworkService {
 
+    private static final Pattern ORACLE_APP_ERROR_PATTERN = Pattern.compile("ORA-(\\d{5})");
+
     private final UsuarioReferidoMapRepository usuarioReferidoMapRepository;
     private final RedReferidosRepository redReferidosRepository;
+    private final ReferralStoredProcedureClient referralStoredProcedureClient;
 
     @Transactional
     public OnboardReferralResponse onboardReferral(Long idReferido, String codigoReferidoPropio, String codigoReferidorUsado) {
@@ -69,24 +78,67 @@ public class ReferralNetworkService {
                 .orElseThrow(() -> new IllegalArgumentException("El codigo del referidor no existe"));
 
         Long idReferidor = referidor.getIdReferido();
-        if (idReferidor.equals(idReferido)) {
-            throw new IllegalArgumentException("Un usuario no puede referirse a si mismo");
-        }
-
-        RedReferidos existingRelation = redReferidosRepository.findById(idReferido).orElse(null);
-        if (existingRelation != null) {
-            if (existingRelation.getIdReferidor().equals(idReferidor)) {
-                return new LinkReferralResponse(idReferido, idReferidor, true, true);
+        try {
+            referralStoredProcedureClient.spInsertarReferido(referido.getIdReferido(), idReferidor);
+            return new LinkReferralResponse(referido.getIdReferido(), idReferidor, true, false);
+        } catch (ReferralStoredProcedureException ex) {
+            if (ex.isOracleError(20001)) {
+                RedReferidos existingRelation = redReferidosRepository.findById(idReferido).orElse(null);
+                if (existingRelation != null && existingRelation.getIdReferidor().equals(idReferidor)) {
+                    return new LinkReferralResponse(idReferido, idReferidor, true, true);
+                }
+                throw new IllegalStateException("El usuario referido ya esta ligado a otro referidor");
             }
-            throw new IllegalStateException("El usuario referido ya esta ligado a otro referidor");
+            if (ex.isOracleError(20002)) {
+                throw new IllegalArgumentException("Un usuario no puede referirse a si mismo");
+            }
+            if (ex.isOracleError(20003)) {
+                throw new IllegalStateException("Se detecto un ciclo en la red de referidos");
+            }
+            if (ex.isOracleError(20004)) {
+                throw new IllegalStateException("Se excede el maximo de 3 niveles en la red");
+            }
+            throw new IllegalStateException("Error al insertar referido en base mediante SP", ex);
+        }
+    }
+
+    @Transactional
+    public LinkReferralFullResponse linkReferralFull(String codigoReferido, Long idReferidor) {
+        if (idReferidor == null || idReferidor <= 0) {
+            throw new IllegalArgumentException("idReferidor es obligatorio");
         }
 
-        RedReferidos saved = redReferidosRepository.save(RedReferidos.builder()
-                .idReferido(referido.getIdReferido())
-                .idReferidor(idReferidor)
-                .build());
+        String normalizedCode = normalizeCode(codigoReferido);
+        try {
+            referralStoredProcedureClient.spInsertarReferidoFull(normalizedCode, idReferidor);
+        } catch (ReferralStoredProcedureException ex) {
+            if (ex.isOracleError(20001)) {
+                throw new IllegalStateException("El usuario ya existe en la red");
+            }
+            if (ex.isOracleError(20002)) {
+                throw new IllegalArgumentException("Un usuario no puede referirse a si mismo");
+            }
+            if (ex.isOracleError(20003)) {
+                throw new IllegalStateException("Se detecto un ciclo en la red de referidos");
+            }
+            if (ex.isOracleError(20004)) {
+                throw new IllegalStateException("Se excede el maximo de 3 niveles en la red");
+            }
+            throw new IllegalStateException("Error al insertar referido en base mediante SP", ex);
+        }
 
-        return new LinkReferralResponse(saved.getIdReferido(), saved.getIdReferidor(), true, false);
+        UsuarioReferidoMap referido = usuarioReferidoMapRepository.findByCodigoReferidoNormalized(normalizedCode)
+                .orElseThrow(() -> new IllegalStateException(
+                        "No se encontro el mapping del codigo tras ejecutar sp_insertar_referido_full"
+                ));
+
+        return new LinkReferralFullResponse(
+                normalizedCode,
+                referido.getIdReferido(),
+                idReferidor,
+                "Referido insertado correctamente",
+                true
+        );
     }
 
     private String normalizeCode(String codigoReferido) {
@@ -94,5 +146,16 @@ public class ReferralNetworkService {
             throw new IllegalArgumentException("El codigoReferido es obligatorio");
         }
         return codigoReferido.trim().toUpperCase();
+    }
+
+    private Integer extractOracleCode(String message) {
+        if (message == null) {
+            return null;
+        }
+        Matcher matcher = ORACLE_APP_ERROR_PATTERN.matcher(message);
+        if (!matcher.find()) {
+            return null;
+        }
+        return Integer.parseInt(matcher.group(1));
     }
 }
