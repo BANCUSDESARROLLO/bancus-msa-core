@@ -28,6 +28,9 @@ public class UsuarioReferidoMap {
     @Column(name = "ID_REFERIDO", nullable = false)
     private Long idReferido;
 
+    @Column(name = "ESTATUS", insertable = false, updatable = false)
+    private Integer estatus;
+
     @Column(name = "FECHA_CREACION", insertable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 }

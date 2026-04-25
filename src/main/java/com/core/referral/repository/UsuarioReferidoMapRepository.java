@@ -14,7 +14,7 @@ public interface UsuarioReferidoMapRepository extends JpaRepository<UsuarioRefer
     Optional<UsuarioReferidoMap> findByIdReferido(Long idReferido);
 
     @Query(value = """
-            SELECT CODIGO_REFERIDO, ID_REFERIDO, FECHA_CREACION
+            SELECT CODIGO_REFERIDO, ID_REFERIDO, FECHA_CREACION, ESTATUS
             FROM APP_COREFINAN.USUARIO_REFERIDO_MAP
             WHERE REGEXP_REPLACE(UPPER(CODIGO_REFERIDO), '[^A-Z0-9]', '') =
                   REGEXP_REPLACE(UPPER(:codigoReferido), '[^A-Z0-9]', '')

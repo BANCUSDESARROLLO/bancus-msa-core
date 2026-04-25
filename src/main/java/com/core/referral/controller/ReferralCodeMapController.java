@@ -29,10 +29,22 @@ public class ReferralCodeMapController {
                     .body(ApiResponse.error("El campo codigoReferido es obligatorio", "VALIDACION_FALLIDA"));
         }
 
-        VerifyReferralCodeResponse response = referralCodeMapService.verifyCode(request.codigoReferido());
-        if (!response.existe()) {
+        VerifyReferralCodeResponse response;
+        try {
+            response = referralCodeMapService.verifyCode(request.codigoReferido());
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(ApiResponse.error(ex.getMessage(), "INTEGRACION_AUTH_ERROR"));
+        }
+
+        if (!response.existeEnAuth() || !response.existeEnCore()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error("El codigo de referido no existe", "CODIGO_REFERIDO_NO_EXISTE"));
+                    .body(ApiResponse.error("El codigo de referido debe existir en AUTH y CORE", "CODIGO_REFERIDO_NO_EXISTE_EN_AMBAS"));
+        }
+
+        if (!response.consistente()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(ApiResponse.error("El codigo existe pero no esta sincronizado entre AUTH y CORE", "CODIGO_REFERIDO_DESINCRONIZADO"));
         }
 
         return ResponseEntity.ok(ApiResponse.success("Consulta de codigo procesada", response));

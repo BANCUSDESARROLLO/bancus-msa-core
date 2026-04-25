@@ -6,8 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="32069c0a-5892-4ec4-b89f-1401a57e226a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/controller/CoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/controller/CoreController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/controller/ReferralCodeMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/controller/ReferralCodeMapController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/controller/ReferralIntegrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/controller/ReferralIntegrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/dto/response/VerifyReferralCodeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/dto/response/VerifyReferralCodeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/entity/UsuarioReferidoMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/entity/UsuarioReferidoMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/repository/UsuarioReferidoMapRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/repository/UsuarioReferidoMapRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/service/ReferralCodeMapService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/service/ReferralCodeMapService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/core/referral/service/ReferralIntegrationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/core/referral/service/ReferralIntegrationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
