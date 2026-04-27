@@ -40,4 +40,30 @@ public class AuthServiceClient {
             throw new AuthIntegrationException("No fue posible comunicarse con AUTH", ex);
         }
     }
+
+    public ReferralCodeOwnerDto getOwnerByUserId(Long idUsuario) {
+        try {
+            return authRestClient.get()
+                    .uri("/api/auth/referrals/user/{idUsuario}", idUsuario)
+                    .retrieve()
+                    .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                        if (response.getStatusCode().value() == 404) {
+                            throw new ResourceNotFoundException(
+                                    "Usuario no encontrado en AUTH: " + idUsuario
+                            );
+                        }
+                        throw new AuthIntegrationException(
+                                "AUTH rechazo la solicitud con estado " + response.getStatusCode().value()
+                        );
+                    })
+                    .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
+                        throw new AuthIntegrationException("AUTH respondio con error interno");
+                    })
+                    .body(ReferralCodeOwnerDto.class);
+        } catch (ResourceNotFoundException ex) {
+            throw ex;
+        } catch (RestClientException ex) {
+            throw new AuthIntegrationException("No fue posible comunicarse con AUTH", ex);
+        }
+    }
 }

@@ -1,10 +1,12 @@
 package com.core.referral.service;
 
+import com.core.integration.auth.AuthServiceClient;
 import com.core.referral.dto.response.ReferralTreeDiagramNodeResponse;
 import com.core.referral.dto.response.ReferralTreeDiagramResponse;
 import com.core.referral.dto.response.ReferralTreeTableResponse;
 import com.core.referral.dto.response.ReferralTreeTableRowResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReferralTreeQueryService {
 
     private static final Comparator<TreeRow> BY_ID_REFERIDO =
@@ -61,6 +64,7 @@ public class ReferralTreeQueryService {
             """;
 
     private final JdbcTemplate jdbcTemplate;
+    private final AuthServiceClient authServiceClient;
 
     @Value("${core.referral.schema:APP_COREFINAN}")
     private String referralSchema;
@@ -104,7 +108,9 @@ public class ReferralTreeQueryService {
             return new ReferralTreeDiagramResponse(currentUserId, false, 0, List.of());
         }
 
-        ReferralTreeDiagramNodeResponse rootNode = buildDiagramNode(root, context);
+        Map<Long, String> usernameByUserId = new HashMap<>();
+        Map<String, String> usernameByCode = new HashMap<>();
+        ReferralTreeDiagramNodeResponse rootNode = buildDiagramNode(root, context, usernameByUserId, usernameByCode);
         if (rootNode == null) {
             return new ReferralTreeDiagramResponse(currentUserId, false, 0, List.of());
         }
@@ -112,7 +118,7 @@ public class ReferralTreeQueryService {
         return new ReferralTreeDiagramResponse(
                 currentUserId,
                 existsInReferralNetwork(currentUserId),
-                context.byId().size(),
+                Math.max(context.byId().size() - 1, 0),
                 List.of(rootNode)
         );
     }
@@ -209,12 +215,19 @@ public class ReferralTreeQueryService {
         }
     }
 
-    private ReferralTreeDiagramNodeResponse buildDiagramNode(TreeRow current, TreeContext context) {
-        List<ReferralTreeDiagramNodeResponse> children = new ArrayList<>();
+    private ReferralTreeDiagramNodeResponse buildDiagramNode(
+            TreeRow current,
+            TreeContext context,
+            Map<Long, String> usernameByUserId,
+            Map<String, String> usernameByCode
+    ) {
+        String username = resolveUsername(current.idReferido(), current.codigoReferido(), usernameByUserId, usernameByCode);
+        String usernameReferidor = resolveUsername(current.idReferidor(), current.codigoReferidor(), usernameByUserId, usernameByCode);
+        List<ReferralTreeDiagramNodeResponse> referidos = new ArrayList<>();
         for (TreeRow child : context.childrenByParent().getOrDefault(current.idReferido(), List.of())) {
-            ReferralTreeDiagramNodeResponse childNode = buildDiagramNode(child, context);
+            ReferralTreeDiagramNodeResponse childNode = buildDiagramNode(child, context, usernameByUserId, usernameByCode);
             if (childNode != null) {
-                children.add(childNode);
+                referidos.add(childNode);
             }
         }
 
@@ -223,10 +236,66 @@ public class ReferralTreeQueryService {
                 current.idReferidor(),
                 current.codigoReferido(),
                 current.codigoReferidor(),
+                username,
+                usernameReferidor,
                 current.fechaRegistro(),
                 current.nivel(),
-                children
+                referidos
         );
+    }
+
+    private String resolveUsername(
+            Long idUsuario,
+            String codigoReferido,
+            Map<Long, String> usernameByUserId,
+            Map<String, String> usernameByCode
+    ) {
+        String username = resolveUsernameByUserId(idUsuario, usernameByUserId);
+        if (username != null) {
+            return username;
+        }
+        return resolveUsernameByCode(codigoReferido, usernameByCode);
+    }
+
+    private String resolveUsernameByUserId(Long idUsuario, Map<Long, String> usernameByUserId) {
+        if (idUsuario == null || idUsuario <= 0) {
+            return null;
+        }
+
+        if (usernameByUserId.containsKey(idUsuario)) {
+            return usernameByUserId.get(idUsuario);
+        }
+
+        try {
+            String username = authServiceClient.getOwnerByUserId(idUsuario).nombreUsuario();
+            usernameByUserId.put(idUsuario, username);
+            return username;
+        } catch (Exception ex) {
+            log.warn("No se pudo resolver username en AUTH por idUsuario={}: {}", idUsuario, ex.getMessage());
+            usernameByUserId.put(idUsuario, null);
+            return null;
+        }
+    }
+
+    private String resolveUsernameByCode(String codigoReferido, Map<String, String> usernameByCode) {
+        if (codigoReferido == null || codigoReferido.isBlank()) {
+            return null;
+        }
+
+        String normalizedCode = codigoReferido.trim().toUpperCase();
+        if (usernameByCode.containsKey(normalizedCode)) {
+            return usernameByCode.get(normalizedCode);
+        }
+
+        try {
+            String username = authServiceClient.getOwnerByReferralCode(normalizedCode).nombreUsuario();
+            usernameByCode.put(normalizedCode, username);
+            return username;
+        } catch (Exception ex) {
+            log.warn("No se pudo resolver username en AUTH por codigoReferido={}: {}", normalizedCode, ex.getMessage());
+            usernameByCode.put(normalizedCode, null);
+            return null;
+        }
     }
 
     private String displayCode(String code, Long id) {

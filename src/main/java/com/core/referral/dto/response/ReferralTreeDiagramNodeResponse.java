@@ -8,8 +8,10 @@ public record ReferralTreeDiagramNodeResponse(
         Long idReferidor,
         String codigoReferido,
         String codigoReferidor,
+        String username,
+        String usernameReferidor,
         LocalDateTime fechaRegistro,
         Integer nivel,
-        List<ReferralTreeDiagramNodeResponse> hijos
+        List<ReferralTreeDiagramNodeResponse> referidos
 ) {
 }
