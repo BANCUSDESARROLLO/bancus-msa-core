@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public class ReferralStoredProcedureClient {
 
     private static final Pattern ORACLE_APP_ERROR_PATTERN = Pattern.compile("ORA-(\\d{5})");
+    private static final Pattern ORACLE_BUSINESS_ERROR_PATTERN = Pattern.compile("ORA-(20\\d{3})");
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -56,7 +57,7 @@ public class ReferralStoredProcedureClient {
             if (result != null && result.mensaje() != null) {
                 String mensaje = result.mensaje().trim();
                 if (!mensaje.isEmpty() && !"OK".equalsIgnoreCase(mensaje)) {
-                    Integer oracleCode = extractOracleCode(new IllegalStateException(mensaje));
+                    Integer oracleCode = extractPreferredOracleCode(mensaje);
                     throw new ReferralStoredProcedureException(
                             "sp_insertar_referido_full reporto error: " + mensaje,
                             oracleCode,
@@ -95,6 +96,21 @@ public class ReferralStoredProcedureClient {
                 }
             }
             current = current.getCause();
+        }
+        return null;
+    }
+
+    private Integer extractPreferredOracleCode(String message) {
+        if (message == null) {
+            return null;
+        }
+        Matcher businessMatcher = ORACLE_BUSINESS_ERROR_PATTERN.matcher(message);
+        if (businessMatcher.find()) {
+            return Integer.parseInt(businessMatcher.group(1));
+        }
+        Matcher genericMatcher = ORACLE_APP_ERROR_PATTERN.matcher(message);
+        if (genericMatcher.find()) {
+            return Integer.parseInt(genericMatcher.group(1));
         }
         return null;
     }

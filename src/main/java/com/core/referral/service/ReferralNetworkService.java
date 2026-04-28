@@ -124,7 +124,8 @@ public class ReferralNetworkService {
             if (ex.isOracleError(20004)) {
                 throw new IllegalStateException("Se excede el maximo de 3 niveles en la red");
             }
-            throw new IllegalStateException("Error al insertar referido en base mediante SP", ex);
+            String detail = ex.getMessage() != null ? ex.getMessage() : "Error al insertar referido en base mediante SP";
+            throw new IllegalStateException(detail, ex);
         }
 
         UsuarioReferidoMap referido = usuarioReferidoMapRepository.findByCodigoReferidoNormalized(normalizedCode)
