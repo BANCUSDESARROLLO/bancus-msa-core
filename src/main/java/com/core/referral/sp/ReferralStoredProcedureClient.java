@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,18 +39,37 @@ public class ReferralStoredProcedureClient {
     }
 
     public void spInsertarReferidoFull(String codigoReferido, Long idReferidor) {
-        String call = "{ call " + referralSchema + ".sp_insertar_referido_full(?, ?) }";
+        String call = "{ call " + referralSchema + ".sp_insertar_referido_full(?, ?, ?, ?) }";
 
         try {
-            jdbcTemplate.execute(call, (CallableStatement cs) -> {
+            SpInsertarReferidoFullResult result = jdbcTemplate.execute(call, (CallableStatement cs) -> {
                 cs.setString(1, codigoReferido);
                 cs.setLong(2, idReferidor);
+                cs.registerOutParameter(3, Types.NUMERIC);
+                cs.registerOutParameter(4, Types.VARCHAR);
                 cs.execute();
-                return null;
+                Long outIdReferido = cs.getObject(3) != null ? cs.getLong(3) : null;
+                String outMensaje = cs.getString(4);
+                return new SpInsertarReferidoFullResult(outIdReferido, outMensaje);
             });
+
+            if (result != null && result.mensaje() != null) {
+                String mensaje = result.mensaje().trim();
+                if (!mensaje.isEmpty() && !"OK".equalsIgnoreCase(mensaje)) {
+                    Integer oracleCode = extractOracleCode(new IllegalStateException(mensaje));
+                    throw new ReferralStoredProcedureException(
+                            "sp_insertar_referido_full reporto error: " + mensaje,
+                            oracleCode,
+                            null
+                    );
+                }
+            }
         } catch (DataAccessException ex) {
             throw toReferralProcedureException("Error al ejecutar sp_insertar_referido_full", ex);
         }
+    }
+
+    private record SpInsertarReferidoFullResult(Long idReferido, String mensaje) {
     }
 
     private ReferralStoredProcedureException toReferralProcedureException(String message, DataAccessException ex) {
