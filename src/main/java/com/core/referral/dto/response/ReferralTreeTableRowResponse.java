@@ -7,6 +7,8 @@ public record ReferralTreeTableRowResponse(
         Long idReferidor,
         String codigoReferido,
         String codigoReferidor,
+        String username,
+        String usernameReferidor,
         Integer nivel,
         String rutaIds,
         String rutaCodigos,
