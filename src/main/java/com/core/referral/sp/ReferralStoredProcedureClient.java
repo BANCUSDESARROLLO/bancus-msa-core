@@ -56,7 +56,7 @@ public class ReferralStoredProcedureClient {
 
             if (result != null && result.mensaje() != null) {
                 String mensaje = result.mensaje().trim();
-                if (!mensaje.isEmpty() && !"OK".equalsIgnoreCase(mensaje)) {
+                if (isErrorMessage(mensaje)) {
                     Integer oracleCode = extractPreferredOracleCode(mensaje);
                     throw new ReferralStoredProcedureException(
                             "sp_insertar_referido_full reporto error: " + mensaje,
@@ -113,6 +113,31 @@ public class ReferralStoredProcedureClient {
             return Integer.parseInt(genericMatcher.group(1));
         }
         return null;
+    }
+
+    private boolean isErrorMessage(String mensaje) {
+        if (mensaje == null) {
+            return false;
+        }
+
+        String normalized = mensaje.trim();
+        if (normalized.isEmpty()) {
+            return false;
+        }
+
+        // Mensajes explícitos de éxito que pueden venir desde el SP.
+        if ("OK".equalsIgnoreCase(normalized)) {
+            return false;
+        }
+        if (normalized.toLowerCase().contains("insertado correctamente")) {
+            return false;
+        }
+
+        // Si Oracle reporta ORA-xxxxx o texto de error, sí se considera falla.
+        if (normalized.toUpperCase().contains("ORA-")) {
+            return true;
+        }
+        return normalized.toLowerCase().startsWith("error");
     }
 
 }

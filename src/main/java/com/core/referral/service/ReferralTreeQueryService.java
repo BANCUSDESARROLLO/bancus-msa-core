@@ -86,7 +86,7 @@ public class ReferralTreeQueryService {
         List<ReferralTreeTableRowResponse> rows = new ArrayList<>();
         Map<Long, String> usernameByUserId = new HashMap<>();
         Map<String, String> usernameByCode = new HashMap<>();
-        appendTableRows(root, new ArrayList<>(), new ArrayList<>(), context, rows, usernameByUserId, usernameByCode);
+        appendTableRows(root, context, rows, usernameByUserId, usernameByCode);
 
         return new ReferralTreeTableResponse(
                 currentUserId,
@@ -190,40 +190,26 @@ public class ReferralTreeQueryService {
 
     private void appendTableRows(
             TreeRow current,
-            List<String> parentPathIds,
-            List<String> parentPathCodes,
             TreeContext context,
             List<ReferralTreeTableRowResponse> output,
             Map<Long, String> usernameByUserId,
             Map<String, String> usernameByCode
     ) {
-        List<String> currentPathIds = new ArrayList<>(parentPathIds);
-        currentPathIds.add(String.valueOf(current.idReferido()));
-
-        List<String> currentPathCodes = new ArrayList<>(parentPathCodes);
-        currentPathCodes.add(displayCode(current.codigoReferido(), current.idReferido()));
-
         String username = resolveUsername(current.idReferido(), current.codigoReferido(), usernameByUserId, usernameByCode);
         String usernameReferidor = resolveUsername(current.idReferidor(), current.codigoReferidor(), usernameByUserId, usernameByCode);
 
         output.add(new ReferralTreeTableRowResponse(
                 current.idReferido(),
-                current.idReferidor(),
                 current.codigoReferido(),
-                current.codigoReferidor(),
+                current.fechaRegistro(),
                 username,
                 usernameReferidor,
-                current.nivel(),
-                String.join(" > ", currentPathIds),
-                String.join(" > ", currentPathCodes),
-                current.fechaRegistro()
+                current.nivel()
         ));
 
         for (TreeRow child : context.childrenByParent().getOrDefault(current.idReferido(), List.of())) {
             appendTableRows(
                     child,
-                    currentPathIds,
-                    currentPathCodes,
                     context,
                     output,
                     usernameByUserId,
